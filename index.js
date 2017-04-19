@@ -8,11 +8,15 @@ const express = require('express'),
       userRoutes = require('./routes/userRoutes.js'),
       mainRoutes = require('./routes/mainRoutes.js'),
       router=express.Router(),
-      corsOptions = {origin:`http://localserver:${port}`},
+      corsOptions = {
+        origin:[`http://localhost:3000`, `http://localhost:3001`],
+        credentials: true
+      },
       app = express();
 
 
 app.use(cors(corsOptions))
+
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/../admin/public'));
 app.use(session({ secret: config.sessionSecret }));

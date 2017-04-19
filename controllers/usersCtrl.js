@@ -13,9 +13,11 @@ function hash(given) {
 module.exports = {
     create: (req, res, next) => {
       const userInfo = {
-        username: req.body.username,
         email: req.body.email.toLowerCase(),
-        password_hash: hash(req.body.password)
+        password_hash: hash(req.body.password),
+        firstname: req.body.firstname.toLowerCase(),
+        lastname: req.body.lastname.toLowerCase(),
+        company: req.body.company.toLowerCase()
       }
       db('users').returning('*').insert(userInfo)
       .then ((response) =>{
@@ -33,7 +35,12 @@ module.exports = {
         return userFunc.handleResponse(res,500,'error',err);});
     },
     getUser: function(req, res) {
-      delete req.user.password
+      console.log(req.headers)
+        console.log(req.user)
+      if (!req.user) {
+
+      }
+      // delete req.user.password
       userFunc.handleResponse(res,200, 'success',userFunc.returnUser(req.user))
     }
 }
