@@ -9,15 +9,16 @@ function hash(given) {
     return bcrypt.hashSync(given, salt)
 }
 
-
+//TODO fix passing the admin_id
 module.exports = {
-    create: (req, res, next) => {
+    createUser: (req, res, next) => {
       const userInfo = {
         email: req.body.email.toLowerCase(),
         password_hash: hash(req.body.password),
         firstname: req.body.firstname.toLowerCase(),
         lastname: req.body.lastname.toLowerCase(),
-        company: req.body.company.toLowerCase()
+        company: req.body.company.toLowerCase(),
+        admin_id: 1
       }
       db('users').returning('*').insert(userInfo)
       .then ((response) =>{
@@ -26,7 +27,7 @@ module.exports = {
           if(!user) { return res.status(403).json(info)}
           req.logIn(user, err => {
             if (err) {return next(err)}
-            return res.redirect('/user/currentuser');
+            return res.redirect('/api/user');
           });
         })(req, res, next)
       })
@@ -34,7 +35,7 @@ module.exports = {
         console.log('create:', err)
         return userFunc.handleResponse(res,500,'error',err);});
     },
-    getUser: function(req, res) {
+    readUser: function(req, res) {
       console.log(req.headers)
         console.log(req.user)
       if (!req.user) {
