@@ -23,7 +23,6 @@ module.exports = {
               }
               db('admins').returning('*').insert(adminInfo)
               .then ((response) =>{
-                console.log(response)
                 passport.authenticate('local', (err, user, info) => {
                   if(err){return next(err);}
                   if(!user) { return res.status(403).json(info)}
@@ -34,7 +33,6 @@ module.exports = {
                 })(req, res, next)
               })
               .catch((err)=>{
-                console.log('create:', err)
                 return userFunc.handleResponse(res,500,'error',err);
                 });
         }

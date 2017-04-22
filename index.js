@@ -9,28 +9,27 @@ const express = require('express'),
       mainRoutes = require('./routes/mainRoutes.js'),
       adminRoutes = require('./routes/adminRoutes.js'),
       messageRoutes = require('./routes/messageRoutes.js'),
+      socketCtrl = require('./controllers/socketCtrl'),
       router=express.Router(),
       corsOptions = {
-        origin:[`http://localhost:3000`, `http://localhost:3001`],
-        credentials: true
+          origin:[`http://localhost:3000`, `http://localhost:3001`],
+          credentials: true
       },
       app = express(),
 			server = require('http').createServer(app),
 			io = require('socket.io')(server);
 
-      io.on('connection', socket => {
-        console.log(`Socket ${socket.id} connected`)
-        // io.emit('newConnection', "Somebody connected")
-        //socket.to(socket.id).emit
+io.on('connection', socket => {
+    socket.on('authenticated', function(data){
+        socket.emit('socketid',socket.id)
+        socket.join(data)
+        socketCtrl.fetchAllMessages(data)
+        .then(response=>{
+          socket.emit('messagesfetched',response)
+        })
+    })
 
-			  socket.on('authenticated', data =>{
-        // make db call
-          socket.emit("messages", data)
-          socket.join(data)
-			  })
-
-
-      })
+})
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json());

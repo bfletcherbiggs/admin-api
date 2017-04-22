@@ -32,16 +32,13 @@ module.exports = {
         })(req, res, next)
       })
       .catch((err)=>{
-        console.log('create:', err)
         return userFunc.handleResponse(res,500,'error',err);});
     },
     readUser: function(req, res) {
-      console.log(req.headers)
-        console.log(req.user)
       if (!req.user) {
 
       }
-      // delete req.user.password
+      delete req.user.password
       userFunc.handleResponse(res,200, 'success',userFunc.returnUser(req.user))
     }
 }

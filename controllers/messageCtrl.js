@@ -20,7 +20,6 @@ module.exports = {
         })
     },
     createMessages: (req,res) =>{
-        console.log(req.query)
         let user_id
         let type
         if (req.query.user_id){
@@ -36,7 +35,6 @@ module.exports = {
             message:req.body.message,
             type
         }
-        console.log(message)
         db('messages').returning('*').insert(message)
         .then((response)=>{
             return userFunc.handleResponse(res,200,'message',response)
