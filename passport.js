@@ -22,7 +22,6 @@ passport.use(new LocalStrategy(config, (email, password, done) => {
       done(null, user);
     })
     .catch((err)=>{
-      console.log('passport authenticate error:', err)
       done(err);});
 }));
 
@@ -40,7 +39,6 @@ passport.deserializeUser(function(id, done) {
 //   this is passed the value from deserializeUser (req.user)
 //   whatever value we give to done() here will be saved on our session
 passport.serializeUser(function(user, done) {
-  // console.log('SERIALIZING USER FROM\n', user, 'TO ID\n', user.id)
   done(null, user.id)
 })
 
