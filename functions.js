@@ -9,5 +9,8 @@ module.exports={
     },
     groupMessages: (messageArr) =>{
         return _.groupBy( messageArr , 'chat_id' )
+    },
+    flatten: (newmessage)=>{
+        return _.flatten(newmessage)
     }
 }
