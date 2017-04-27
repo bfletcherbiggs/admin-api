@@ -11,7 +11,6 @@ module.exports = {
             .select('chats.id as chat_id','chats.user_id as user_id','chats.admin_id as admin_id', 'messages.created_at as timestamp','messages.message as message','messages.type as type','users.firstname as firstname','users.lastname as lastname','messages.read as read')
             .orderBy('messages.id')
             .then(response=>{
-                console.log(response)
                 return userFunc.groupMessages(response)
             })
     }),
