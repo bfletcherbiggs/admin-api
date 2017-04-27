@@ -9,7 +9,7 @@ const express = require('express'),
     mainRoutes = require('./routes/mainRoutes.js'),
     adminRoutes = require('./routes/adminRoutes.js'),
     messageRoutes = require('./routes/messageRoutes.js'),
-    socketCtrl = require('./controllers/socketCtrl'),
+    socketServer = require('./socket-server'),
     router=express.Router(),
     corsOptions = {
         origin:[`http://localhost:3000`, `http://localhost:3001`],
@@ -19,40 +19,7 @@ const express = require('express'),
 	      server = require('http').createServer(app),
 		  io = require('socket.io')(server);
 
-
-
-io.on('connection', socket => {
-    socket.on('authenticated', function(data){
-        socket.emit('socketid',socket.id)
-        socket.join(data)
-        socketCtrl.fetchAllMessages(data)
-        .then(response=>{
-            socket.emit('messagesfetched',response)
-        })
-    })
-    socket.on('newmessage', function(data){
-        socketCtrl.insertMessage(data)
-        .then(response=>{
-            socket.emit('messagereceived', response)
-        })
-    })
-    socket.on('fetchmessages',function(data){
-        socketCtrl.fetchAllMessages(data)
-        .then(response=>{
-            socket.emit('messagesfetched',response)
-        })
-    })
-    socket.on('chatread',function(data){
-        socketCtrl.updateChat(data)
-        .then(()=>{
-            socketCtrl.fetchAllMessages(data.adminid)
-            .then(response=>{
-                socket.emit('messagesfetched',response)
-            })
-        })
-    })
-
-})
+socketServer(io)
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json());

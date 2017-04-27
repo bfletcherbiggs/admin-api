@@ -43,7 +43,7 @@ module.exports = {
             }
         }
 
-        db('users')
+        return db('users')
         .returning('id')
         .insert(userInfo)
         .then ( response => {
