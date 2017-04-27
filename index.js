@@ -1,23 +1,23 @@
 const express = require('express'),
-			cors = require('cors'),
-			bodyParser = require('body-parser'),
-			port = 3001,
-      session = require("express-session"),
-      passport = require('./passport'),
-      config = require('./config.json'),
-      userRoutes = require('./routes/userRoutes.js'),
-      mainRoutes = require('./routes/mainRoutes.js'),
-      adminRoutes = require('./routes/adminRoutes.js'),
-      messageRoutes = require('./routes/messageRoutes.js'),
-      socketCtrl = require('./controllers/socketCtrl'),
-      router=express.Router(),
-      corsOptions = {
-          origin:[`http://localhost:3000`, `http://localhost:3001`],
-          credentials: true
-      },
-      app = express(),
-			server = require('http').createServer(app),
-			io = require('socket.io')(server);
+    cors = require('cors'),
+	bodyParser = require('body-parser'),
+	port = 3001,
+    session = require("express-session"),
+    passport = require('./passport'),
+    config = require('./config.json'),
+    userRoutes = require('./routes/userRoutes.js'),
+    mainRoutes = require('./routes/mainRoutes.js'),
+    adminRoutes = require('./routes/adminRoutes.js'),
+    messageRoutes = require('./routes/messageRoutes.js'),
+    socketCtrl = require('./controllers/socketCtrl'),
+    router=express.Router(),
+    corsOptions = {
+        origin:[`http://localhost:3000`, `http://localhost:3001`],
+        credentials: true
+    },
+    app = express(),
+	      server = require('http').createServer(app),
+		  io = require('socket.io')(server);
 
 
 
@@ -34,6 +34,12 @@ io.on('connection', socket => {
         socketCtrl.insertMessage(data)
         .then(response=>{
             socket.emit('messagereceived', response)
+        })
+    })
+    socket.on('fetchmessages',function(data){
+        socketCtrl.fetchAllMessages(data)
+        .then(response=>{
+            socket.emit('messagesfetched',response)
         })
     })
     socket.on('chatread',function(data){
@@ -63,5 +69,5 @@ app.use('/api/admin', adminRoutes)
 
 
 server.listen(port, function() {
-  console.log('Server listening on port', port)
+    console.log('Server listening on port', port)
 })
