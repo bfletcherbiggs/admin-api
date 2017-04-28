@@ -9,6 +9,8 @@ const express = require('express'),
     mainRoutes = require('./routes/mainRoutes.js'),
     adminRoutes = require('./routes/adminRoutes.js'),
     messageRoutes = require('./routes/messageRoutes.js'),
+		inputRoutes = require('./routes/inputRoutes.js'),
+		compRoutes = require('./routes/compRoutes.js'),
     socketServer = require('./socket-server'),
     router=express.Router(),
     corsOptions = {
@@ -33,6 +35,9 @@ app.use('/api', mainRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/admin', adminRoutes)
+app.use('/api/inputs', inputRoutes)
+app.use('/api/comps', compRoutes)
+
 
 
 server.listen(port, function() {
