@@ -23,7 +23,6 @@ socketServer(io)
 app.use(cors(corsOptions))
 
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../admin/public'));
 app.use(session({ secret: config.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session())
