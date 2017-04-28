@@ -3,9 +3,11 @@ const db = require('../db'),
       passport = require("../passport.js"),
       _ = require('lodash'),
       userFunc = require('../functions.js'),
-      ses = require('../s3'),
+      sendinBlue = require('../sendinBlue'),
       socketCtrl = require('./socketCtrl'),
       io = require('socket.io');
+
+      console.dir(sendinBlue.send_email)
 
 function hash(given) {
     const salt = bcrypt.genSaltSync(10);
@@ -21,26 +23,14 @@ module.exports = {
             firstname: req.body.firstname.toLowerCase(),
             lastname: req.body.lastname.toLowerCase(),
             company: req.body.company.toLowerCase(),
-            admin_id: 1
+            admin_id: req.user.id
         }
         const input = {
-            Source: "bfletcherbiggs@gmail.com",
-            Destination: {
-                ToAddresses: ['success@simulator.amazonses.com']
-            },
-            Message: {
-                Subject: {
-                    Data: "New Account Created"
-                },
-                Body: {
-                    Html: {
-                        Data: `<p>Hello, ${req.body.firstname} ${req.body.lastname} welcome to Goldsage!</p>`
-                    },
-                    Text: {
-                        Data: `Your account has been created.  Please login with the following password. ${req.body.password}`
-                    }
-                }
-            }
+            "to" : {"bfletcherbiggs@gmail.com":"to whom!"},
+            "from" : ["toby@goldsage.co", "from email!"],
+            "subject": "New Account Created",
+            "html": `<p>Hello, ${req.body.firstname} ${req.body.lastname} welcome to Goldsage!</p>
+                    <p>Your account has been created.  Please login with the following password. ${req.body.password}</p>`
         }
 
         return db('users')
@@ -63,9 +53,10 @@ module.exports = {
                     type:'admin'
                 })
                 .then(response=>{
-                    ses.sendEmail(input, function(err,response){
+                    sendinBlue.send_email(input, function(err,response){
                         if(err) console.log(err);
-                        return userFunc.handleResponse(res,200, 'success',response)
+                        console.log(response)
+                        // return userFunc.handleResponse(res,200, 'success',response)
                     })
                 })
             })
