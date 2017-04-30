@@ -1,6 +1,6 @@
 const db = require( '../db.js' ),
     passport = require("../passport.js"),
-    { dropboxKey } = require( '../config.json' );
+    config = require( '../config.json' );
 module.exports = {
     readInputs: ( req, res, next ) => {
       //TODO change id to req.session.passport.user
@@ -32,15 +32,18 @@ module.exports = {
     },
     uploadFile: ( req, res, next ) => {
       //TODO change to req.session
+      console.log('upload file running')
         let user_id = 2
         db( 'users' )
         .returning( '*' )
         .where( 'id', user_id )
         .then( results => {
+          console.log(config)
             let uploadInfo = {
-                dropboxkey: dropboxkey,
+                dropboxkey: config.dropboxKey,
                 company: results[0].company
             }
+            console.log(uploadInfo)
             return res.status( 200 ).json( uploadInfo )
         })
         .catch( err => {
