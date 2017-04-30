@@ -1,6 +1,6 @@
 const db = require( '../db.js' ),
-passport = require("../passport.js"),
-dropboxkey = require( '../dropboxConfig.js' );
+    passport = require("../passport.js"),
+    { dropboxKey } = require( '../config.json' );
 module.exports = {
     readInputs: ( req, res, next ) => {
       //TODO change id to req.session.passport.user
