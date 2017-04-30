@@ -7,7 +7,7 @@ const db = require( '../db' ),
       socketCtrl = require( './socketCtrl' ),
       io = require( 'socket.io' );
 
-function hash( given ) {
+const hash = given => {
     const salt = bcrypt.genSaltSync( 10 );
     return bcrypt.hashSync( given, salt )
 }
@@ -51,19 +51,18 @@ module.exports = {
                 })
                 .then( response => {
                     sendinBlue.send_email( input, response => {
-                        return userFunc.handleResponse( res,200, 'success',response )
+                        return userFunc.handleResponse( res, 200, 'success', response )
                     })
                 })
             })
         })
         .catch( err => {
-            return userFunc.handleResponse( res,500,'error',err )
+            return userFunc.handleResponse( res, 500, 'error', err )
         })
     },
     readUser: ( req, res ) => {
-        if ( !req.user) {
-        }
+        if ( !req.user ) {}
         delete req.user.password
-        userFunc.handleResponse( res,200, 'success',userFunc.returnUser( req.user ) )
+        userFunc.handleResponse( res, 200, 'success', userFunc.returnUser( req.user ) )
     }
 }
