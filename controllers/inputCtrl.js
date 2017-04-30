@@ -1,10 +1,9 @@
 const db = require( '../db.js' ),
-    passport = require("../passport.js"),
-    { dropboxKey } = require( '../config.json' );
+      { dropboxKey } = require( '../config.json' );
+
+//TODO USER_ID
 module.exports = {
     readInputs: ( req, res, next ) => {
-      //TODO change id to req.session.passport.user
-
         let user_id = 2
         db( 'intakegs' )
         .returning( '*' )
@@ -18,11 +17,10 @@ module.exports = {
         })
     },
     updateInputs: ( req, res, next ) => {
-      //TODO change id to req.session.passport.user
         user_id = 2
         db( 'userdata' )
         .where( 'user_id', user_id )
-        .update( req.body,'*' )
+        .update( req.body, '*' )
         .then( results => {
             return res.status( 200 ).json( results )
         })
@@ -31,7 +29,6 @@ module.exports = {
         })
     },
     uploadFile: ( req, res, next ) => {
-      //TODO change to req.session
         let user_id = 2
         db( 'users' )
         .returning( '*' )
@@ -39,7 +36,7 @@ module.exports = {
         .then( results => {
             let uploadInfo = {
                 dropboxkey: dropboxkey,
-                company: results[0].company
+                company: results[ 0 ].company
             }
             return res.status( 200 ).json( uploadInfo )
         })
@@ -47,5 +44,4 @@ module.exports = {
             return res.status( 500 ).json( err )
         })
     }
-
-  }
+}
