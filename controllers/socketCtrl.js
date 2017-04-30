@@ -8,7 +8,7 @@ module.exports = {
             .where( 'chats.admin_id', data )
             .join( 'messages','chats.user_id','messages.user_id' )
             .join( 'users', 'users.id', 'messages.user_id' )
-            .select( 'chats.id as chat_id','chats.user_id as user_id','chats.admin_id as admin_id', 'messages.created_at as timestamp','messages.message as message','messages.type as type','users.firstname as firstname','users.lastname as lastname','messages.read as read' )
+            .select( 'chats.id as chat_id','chats.user_id as user_id','chats.admin_id as admin_id', 'messages.created_at as timestamp','messages.message as message','messages.type as type','users.firstname as firstname','users.lastname as lastname','messages.read as read','users.company as company' )
             .orderBy( 'messages.id' )
             .then( response => {
                 return userFunc.groupMessages( response )
