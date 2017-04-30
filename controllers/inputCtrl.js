@@ -1,5 +1,5 @@
 const db = require( '../db.js' ),
-      { dropboxKey } = require( '../config.json' );
+      config = require( '../config.json' );
 
 //TODO USER_ID
 module.exports = {
@@ -35,7 +35,7 @@ module.exports = {
         .where( 'id', user_id )
         .then( results => {
             let uploadInfo = {
-                dropboxkey: dropboxkey,
+                dropboxkey: config.dropboxKey,
                 company: results[ 0 ].company
             }
             return res.status( 200 ).json( uploadInfo )
