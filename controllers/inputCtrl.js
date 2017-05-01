@@ -4,7 +4,7 @@ const db = require( '../db.js' ),
 //TODO USER_ID
 module.exports = {
     readInputs: ( req, res, next ) => {
-        let user_id = 2
+        let user_id = parseInt(req.query.userId)
         db( 'intakegs' )
         .returning( '*' )
         .from( 'userdata' )
@@ -17,10 +17,10 @@ module.exports = {
         })
     },
     updateInputs: ( req, res, next ) => {
-        user_id = 2
+        user_id = parseInt(req.body.userId)
         db( 'userdata' )
         .where( 'user_id', user_id )
-        .update( req.body, '*' )
+        .update( req.body.inputs, '*' )
         .then( results => {
             return res.status( 200 ).json( results )
         })
@@ -29,7 +29,7 @@ module.exports = {
         })
     },
     uploadFile: ( req, res, next ) => {
-        let user_id = 2
+        let user_id = parseInt(req.query.userId)
         db( 'users' )
         .returning( '*' )
         .where( 'id', user_id )
