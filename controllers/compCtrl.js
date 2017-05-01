@@ -2,7 +2,7 @@ const db = require( '../db.js' );
 
 module.exports = {
     readComps: ( req, res, next ) => {
-        let user_id = 2
+        let user_id = parseInt(req.query.userId)
         db( 'components' )
         .select( 'id', 'user_id', 'compName', 'statusName', 'completed' )
         .where( 'user_id', user_id )
@@ -14,8 +14,7 @@ module.exports = {
         })
     },
     createComps: ( req, res, next ) => {
-    //TODO change user_id
-        let user_id = 2
+        let user_id = req.body.user_id
         db( 'components' )
         .returning( '*' )
         .insert( req.body )
@@ -35,8 +34,7 @@ module.exports = {
         })
     },
     destroyComps: ( req, res, next ) => {
-    //TODO change user_id
-        let user_id = 2
+        let user_id = parseInt(req.query.user_id)
         db( 'components' )
         .where( 'user_id', user_id )
         .andWhere( 'compName', req.query.compName )
@@ -60,9 +58,9 @@ module.exports = {
         let compComplete = {
             completed: req.body.completed
         }
+        let user_id = parseInt(req.body.userId)
         db( 'components' )
-        //TODO change user id
-        .where( 'user_id', 2 )
+        .where( 'user_id', user_id )
         .andWhere( 'compName', req.body.component )
         .update( compComplete, '*' )
         .then( results => {
