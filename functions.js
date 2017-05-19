@@ -1,6 +1,6 @@
 const _ = require( 'lodash' );
 
-module.exports={
+module.exports = {
     handleResponse: ( res, code, statusMsg, data ) => {
         return res.status( code ).json( data )
     },

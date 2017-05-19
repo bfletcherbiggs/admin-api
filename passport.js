@@ -9,8 +9,8 @@ const config = {
 }
 
 // NOTE: this callback function runs when passport.authenticate('local') is called
-passport.use(new LocalStrategy(config, (email, password, done) => {
-    db('admins')
+passport.use( new LocalStrategy( config, ( email, password, done ) => {
+    db( 'admins' )
     .where( { email } )
     .first()
     .then( user => {
@@ -22,24 +22,24 @@ passport.use(new LocalStrategy(config, (email, password, done) => {
         }
         done( null, user )
     })
-    .catch( err =>{ done( err ) })
+    .catch( err => { done( err ) })
 }))
 
 // NOTE:
 //   this is passed the value that serializeUser saved our session
 //   whatever value we give to done() here will end up on req.user
-passport.deserializeUser( (id, done) => {
+passport.deserializeUser( ( id, done ) => {
     db( 'admins' )
     .where( { id } )
     .first()
     .then( user => { done( null, user ) } )
-    .catch( err =>{ done( err, null ) } )
+    .catch( err => { done( err, null ) } )
 })
 
 // NOTE:
 //   this is passed the value from deserializeUser (req.user)
 //   whatever value we give to done() here will be saved on our session
-passport.serializeUser( (user, done) => {
+passport.serializeUser( ( user, done ) => {
     done( null, user.id )
 })
 
